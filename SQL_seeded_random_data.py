@@ -44,51 +44,50 @@ cursor = conn.cursor()
 # Create a table called randMat (Random Matrix)
 tableName = 'randMat'
 
-createTable = '''
-CREATE TABLE IF NOT EXISTS %s (
-          C00             INTEGER key,
-          C01           INTEGER,
-          C02            INTEGER,
-          C03              INTEGER,
-          C04              INTEGER,
-          C05          INTEGER,
-          C06             INTEGER,
-          C07             INTEGER,
-          C08              INTEGER,
-          C09               INTEGER,
-          C10             INTEGER,
-          C11               INTEGER,
-          C12        INTEGER,
-          C13 INTEGER,
-          C14         INTEGER,
-          C15         INTEGER,
-          C16              INTEGER,
-          C17              INTEGER,
-          C18         INTEGER,
-          C19              INTEGER,
-          C20             INTEGER,
-          C21            INTEGER,
-          C22              INTEGER
-          )
-          ''' % tableName
+# createTable = '''
+# CREATE TABLE IF NOT EXISTS %s (
+#           C00             INTEGER key,
+#           C01           INTEGER,
+#           C02            INTEGER,
+#           C03              INTEGER,
+#           C04              INTEGER,
+#           C05          INTEGER,
+#           C06             INTEGER,
+#           C07             INTEGER,
+#           C08              INTEGER,
+#           C09               INTEGER,
+#           C10             INTEGER,
+#           C11               INTEGER,
+#           C12        INTEGER,
+#           C13 INTEGER,
+#           C14         INTEGER,
+#           C15         INTEGER,
+#           C16              INTEGER,
+#           C17              INTEGER,
+#           C18         INTEGER,
+#           C19              INTEGER,
+#           C20             INTEGER,
+#           C21            INTEGER,
+#           C22              INTEGER
+#           )
+#           ''' % tableName
 
+# program column names
 col1 = tuple(['C' + str(i) + ' INTEGER' for i in range(23)])
 col2 = ','.join(col1)
 col = '(%s)' % col2
 
-tableName = 'OT'
+# assembly SQL command for creating Table Name
 createTable = 'CREATE TABLE IF NOT EXISTS %s ' % tableName + col
 
+# execute SQL command for creating Table Name
 cursor.execute(createTable)
 
 # -----------------------------------------------------------------------------
 # Create as many '?,' as there are fields in the table
 # -----------------------------------------------------------------------------
-
-
 def fieldNum(a, w):
     return a.join([a+'?,' for i in range(w)])[:-1]
-
 
 a = fieldNum('', 23)
 
