@@ -41,8 +41,8 @@ conn = sqlite3.connect(':memory:')  # create a database in memory
 # Create a cursor object using the cursor() method
 cursor = conn.cursor()
 
-# Create a table called OT (Optical Test)
-tableName = 'OT'
+# Create a table called randMat (Random Matrix)
+tableName = 'randMat'
 
 createTable = '''
 CREATE TABLE IF NOT EXISTS %s (
@@ -71,6 +71,13 @@ CREATE TABLE IF NOT EXISTS %s (
           C22              INTEGER
           )
           ''' % tableName
+
+col1 = tuple(['C' + str(i) + ' INTEGER' for i in range(23)])
+col2 = ','.join(col1)
+col = '(%s)' % col2
+
+tableName = 'OT'
+createTable = 'CREATE TABLE IF NOT EXISTS %s ' % tableName + col
 
 cursor.execute(createTable)
 
