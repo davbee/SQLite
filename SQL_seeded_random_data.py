@@ -26,6 +26,11 @@ Matrix2 = np.random.randint(100, size=(10, 23))
 df1 = pd.DataFrame(Matrix1)
 df2 = pd.DataFrame(Matrix2)
 
+print('Random Dataset #1:')
+print(df1)
+print('\nRandom Dataset #2:')
+print(df2)
+
 # convert Pandas dataframe to list of tuple for inserting into database
 record1 = [tuple(i) for i in df1.values.tolist()]
 record2 = [tuple(i) for i in df2.values.tolist()]
@@ -102,13 +107,17 @@ cursor.executemany('INSERT INTO '+tableName+' VALUES('+a+');', record2)
 conn.commit()
 
 # Print information about how many records inserted into the table
-print('We have inserted', cursor.rowcount*2, 'records to the table.')
+print('\nWe have inserted', cursor.rowcount*2, 'records to the table.')
 
 # Display data in the database table
-print("Data Inserted in the table:")
+print('\nData Inserted in the table:')
 data = cursor.execute('''SELECT * FROM %s''' % tableName)
 for row in data:
     print(row)
+
+# cursor.execute("SELECT * from %s" % tableName)
+# myresult = cursor.fetchall()
+# print(myresult)
 
 # Closing the database connection
 conn.close()
