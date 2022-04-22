@@ -77,12 +77,12 @@ tableName = 'randMat'
 #           )
 #           ''' % tableName
 
-# program column names
+# programmatically create column names
 col1 = tuple(['C' + str(i) + ' INTEGER' for i in range(23)])
 col2 = ','.join(col1)
 col = '(%s)' % col2
 
-# assembly SQL command for creating Table Name
+# assemble SQL command for creating Table Name
 createTable = 'CREATE TABLE IF NOT EXISTS %s ' % tableName + col
 
 # execute SQL command for creating Table Name
