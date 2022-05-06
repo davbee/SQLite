@@ -40,8 +40,8 @@ record2 = [tuple(i) for i in df2.values.tolist()]
 # Create SQLite3 database
 # -----------------------------------------------------------------------------
 # Connecte to sqlite
-# conn = sqlite3.connect('OT.db') # create a database file
-conn = sqlite3.connect(':memory:')  # create a database in memory
+conn = sqlite3.connect('Random.db')  # create a database file
+# conn = sqlite3.connect(':memory:')  # create a database in memory
 
 # Create a cursor object using the cursor() method
 cursor = conn.cursor()
@@ -88,11 +88,13 @@ createTable = 'CREATE TABLE IF NOT EXISTS %s ' % tableName + col
 # execute SQL command for creating Table Name
 cursor.execute(createTable)
 
+
 # -----------------------------------------------------------------------------
 # Create as many '?,' as there are fields in the table
 # -----------------------------------------------------------------------------
 def fieldNum(a, w):
-    return a.join([a+'?,' for i in range(w)])[:-1]
+    return a.join([a + '?,' for i in range(w)])[:-1]
+
 
 a = fieldNum('', 23)
 
@@ -100,14 +102,14 @@ a = fieldNum('', 23)
 # Insert OT data into the table with one-shot
 # -----------------------------------------------------------------------------
 # cursor.executemany('INSERT INTO '+tableName+' VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);',record1);
-cursor.executemany('INSERT INTO '+tableName+' VALUES('+a+');', record1)
-cursor.executemany('INSERT INTO '+tableName+' VALUES('+a+');', record2)
+cursor.executemany('INSERT INTO ' + tableName + ' VALUES(' + a + ');', record1)
+cursor.executemany('INSERT INTO ' + tableName + ' VALUES(' + a + ');', record2)
 
 # Commit changes in the database
 conn.commit()
 
 # Print information about how many records inserted into the table
-print('\nWe have inserted', cursor.rowcount*2, 'records to the table.')
+print('\nWe have inserted', cursor.rowcount * 2, 'records to the table.')
 
 # Display data in the database table
 print('\nData Inserted in the table:')
