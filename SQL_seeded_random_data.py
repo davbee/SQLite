@@ -7,8 +7,10 @@ Created on Sun Mar 13 16:14:20 2022
 
 # Import module
 import sqlite3
+
 import numpy as np
 import pandas as pd
+
 # import os
 # import re
 # -----------------------------------------------------------------------------
@@ -26,9 +28,9 @@ Matrix2 = np.random.randint(100, size=(10, 23))
 df1 = pd.DataFrame(Matrix1)
 df2 = pd.DataFrame(Matrix2)
 
-print('Random Dataset #1:')
+print("Random Dataset #1:")
 print(df1)
-print('\nRandom Dataset #2:')
+print("\nRandom Dataset #2:")
 print(df2)
 
 # convert Pandas dataframe to list of tuple for inserting into database
@@ -40,14 +42,14 @@ record2 = [tuple(i) for i in df2.values.tolist()]
 # Create SQLite3 database
 # -----------------------------------------------------------------------------
 # Connecte to sqlite
-conn = sqlite3.connect('Random.db')  # create a database file
+conn = sqlite3.connect("Random.db")  # create a database file
 # conn = sqlite3.connect(':memory:')  # create a database in memory
 
 # Create a cursor object using the cursor() method
 cursor = conn.cursor()
 
 # Create a table called randMat (Random Matrix)
-tableName = 'randMat'
+tableName = "randMat"
 
 # createTable = '''
 # CREATE TABLE IF NOT EXISTS %s (
@@ -78,12 +80,12 @@ tableName = 'randMat'
 #           ''' % tableName
 
 # programmatically create column names
-col1 = tuple(['C' + str(i) + ' INTEGER' for i in range(23)])
-col2 = ','.join(col1)
-col = '(%s)' % col2
+col1 = tuple(["C" + str(i) + " INTEGER" for i in range(23)])
+col2 = ",".join(col1)
+col = "(%s)" % col2
 
 # assemble SQL command for creating Table Name
-createTable = 'CREATE TABLE IF NOT EXISTS %s ' % tableName + col
+createTable = "CREATE TABLE IF NOT EXISTS %s " % tableName + col
 
 # execute SQL command for creating Table Name
 cursor.execute(createTable)
@@ -93,27 +95,27 @@ cursor.execute(createTable)
 # Create as many '?,' as there are fields in the table
 # -----------------------------------------------------------------------------
 def fieldNum(a, w):
-    return a.join([a + '?,' for i in range(w)])[:-1]
+    return a.join([a + "?," for i in range(w)])[:-1]
 
 
-a = fieldNum('', 23)
+a = fieldNum("", 23)
 
 # -----------------------------------------------------------------------------
 # Insert OT data into the table with one-shot
 # -----------------------------------------------------------------------------
 # cursor.executemany('INSERT INTO '+tableName+' VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);',record1);
-cursor.executemany('INSERT INTO ' + tableName + ' VALUES(' + a + ');', record1)
-cursor.executemany('INSERT INTO ' + tableName + ' VALUES(' + a + ');', record2)
+cursor.executemany("INSERT INTO " + tableName + " VALUES(" + a + ");", record1)
+cursor.executemany("INSERT INTO " + tableName + " VALUES(" + a + ");", record2)
 
 # Commit changes in the database
 conn.commit()
 
 # Print information about how many records inserted into the table
-print('\nWe have inserted', cursor.rowcount * 2, 'records to the table.')
+print("\nWe have inserted", cursor.rowcount * 2, "records to the table.")
 
 # Display data in the database table
-print('\nData Inserted in the table:')
-data = cursor.execute('''SELECT * FROM %s''' % tableName)
+print("\nData Inserted in the table:")
+data = cursor.execute("""SELECT * FROM %s""" % tableName)
 for row in data:
     print(row)
 
