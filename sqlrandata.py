@@ -20,19 +20,19 @@ import pandas as pd
 # Generate data
 # -----------------------------------------------------------------------------
 def randb() -> None:
-    # generate seeded random data Matrix1
+    # generate seeded random data matrix1
     r = 10
     c = 23
     np.random.seed(seed=np.random.randint(100))
-    Matrix1 = np.random.randint(100, size=(r, c))
+    matrix1 = np.random.randint(100, size=(r, c))
 
-    # generate seeded random data Matrix2
+    # generate seeded random data matrix2
     np.random.seed(seed=np.random.randint(100))
-    Matrix2 = np.random.randint(100, size=(r, c))
+    matrix2 = np.random.randint(100, size=(r, c))
 
     # convert numpy 2D array to Pandas dataframe
-    df1 = pd.DataFrame(Matrix1)
-    df2 = pd.DataFrame(Matrix2)
+    df1 = pd.DataFrame(matrix1)
+    df2 = pd.DataFrame(matrix2)
 
     print("Random Dataset #1:")
     print(df1)
@@ -55,9 +55,9 @@ def randb() -> None:
     cursor = conn.cursor()
 
     # Create a table called randMat (Random Matrix)
-    tableName = "randMat"
+    tablename = "randMat"
 
-    # createTable = '''
+    # createtable = '''
     # CREATE TABLE IF NOT EXISTS %s (
     #           C00             INTEGER key,
     #           C01           INTEGER,
@@ -83,33 +83,38 @@ def randb() -> None:
     #           C21            INTEGER,
     #           C22              INTEGER
     #           )
-    #           ''' % tableName
+    #           ''' % tablename
 
     # programmatically create column names
     col1 = tuple(["C" + str(i) + " INTEGER" for i in range(c)])
     col2 = ",".join(col1)
-    col = "(%s)" % col2
+    # col = "(%s)" % col2
+    col = f"({col2})"
 
     # assemble SQL command for creating Table Name
-    createTable = "CREATE TABLE IF NOT EXISTS %s " % tableName + col
+    # createtable = "CREATE TABLE IF NOT EXISTS %s " % tablename + col
+    createtable = f"CREATE TABLE IF NOT EXISTS {tablename + col} "
 
     # execute SQL command for creating Table Name
-    cursor.execute(createTable)
+    cursor.execute(createtable)
 
     # -----------------------------------------------------------------------------
     # Create as many '?,' as there are fields in the table
     # -----------------------------------------------------------------------------
-    def fieldNum(a, w) -> str:
+    def fieldnum(a, w) -> str:
         return a.join([a + "?," for i in range(w)])[:-1]
 
-    a = fieldNum("", c)
+    a = fieldnum("", c)
 
     # -----------------------------------------------------------------------------
     # Insert OT data into the table with one-shot
     # -----------------------------------------------------------------------------
-    # cursor.executemany('INSERT INTO '+tableName+' VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);',record1);
-    cursor.executemany("INSERT INTO " + tableName + " VALUES(" + a + ");", record1)
-    cursor.executemany("INSERT INTO " + tableName + " VALUES(" + a + ");", record2)
+    # cursor.executemany('INSERT INTO '+tablename+' VALUES(?,?,?,?,?,?,?,?,?,?,
+    # ?,?,?,?,?,?,?,?,?,?,?,?,?);',record1);
+    cursor.executemany("INSERT INTO " + tablename + " VALUES(" + a + ");",
+                       record1)
+    cursor.executemany("INSERT INTO " + tablename + " VALUES(" + a + ");",
+                       record2)
 
     # Commit changes in the database
     conn.commit()
@@ -119,14 +124,15 @@ def randb() -> None:
 
     # Display data in the database table
     print("\nData Inserted in the table:")
-    data = cursor.execute("""SELECT * FROM %s""" % tableName)
+    # data = cursor.execute("""SELECT * FROM %s""" % tablename)
+    data = cursor.execute(f"SELECT * FROM {tablename}")
     k = 0
     for row in data:
         print(row)
         k += 1
-    
+
     print(str(k) + " rows.")
-    # cursor.execute("SELECT * from %s" % tableName)
+    # cursor.execute("SELECT * from %s" % tablename)
     # myresult = cursor.fetchall()
     # print(myresult)
 
